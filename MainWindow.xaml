@@ -1,0 +1,117 @@
+﻿<Window x:Class="DSPLabs.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DSPLabs"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True" Background="Transparent"
+        Title="DSPLabs" Height="540" Width="980" ResizeMode="CanMinimize" Foreground="Transparent">
+    <Window.Resources>
+        <Style x:Key="ControlButton" TargetType="Button">
+            <Setter Property = "BorderThickness" Value="0"></Setter>
+            <Setter Property = "Height" Value="30"></Setter>
+            <Setter Property = "Width" Value="30"></Setter>
+            <Setter Property = "Template" >
+                <Setter.Value >
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="buttonBorder" Background="{Binding Interface.ExitButtonColor}" 
+                                CornerRadius="{Binding Interface.CornerRadiusValue}" 
+                                Margin="{Binding Interface.HalfCornerRadiusValue}">
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property = "IsMouseOver" Value="True">
+                                <Setter Property = "Background" TargetName="buttonBorder" Value="{Binding Interface.ButtonInactiveColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="{Binding Interface.FontFamily}"/>
+            <Setter Property="FontSize" Value="{Binding Interface.FontSize}"/>
+            <Setter Property="Foreground" Value="{Binding Interface.FontColor}"/>
+        </Style>
+        <Style x:Key="PanelButton" TargetType="Button">
+            <Setter Property="Foreground" Value="{Binding Interface.FontColor}" />
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="FontSize" Value="{Binding Interface.FontSize}" />
+            <Setter Property="FontFamily" Value="{Binding Interface.FontFamily}"/>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Margin="15,0,0,0"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Border.Background" Value="#333333" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Border.Background" Value="#222222" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border Background="#333333" CornerRadius="{Binding Interface.CornerRadiusValue}"
+            MouseLeftButtonDown="WindowMouseLeftButtonDown"
+            MouseMove="WindowMouseMove"
+            MouseLeftButtonUp="WindowMouseLeftButtonUp">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="1" 
+                       Content="Цифрова обробка сигналів та зображень"
+                       Style="{StaticResource LabelStyle}"
+                       HorizontalAlignment="Center"></Label>
+                <StackPanel Grid.Column="2"
+                            x:Name="ControlsPanel"
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Right">
+                    <Button x:Name="ExitButton"
+                            Style="{StaticResource ControlButton}"
+                            Click="Exit"></Button>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="4*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Background="#222222">
+                    <StackPanel>
+                        <Button Content="Лабораторна #1" Style="{StaticResource PanelButton}">
+                        </Button>
+                        <Button Content="Лабораторна #2" Style="{StaticResource PanelButton}">
+                        </Button>
+                        <Button Content="Лабораторна #3" Style="{StaticResource PanelButton}">
+                        </Button>
+                        <Button Content="Лабораторна #4" Style="{StaticResource PanelButton}">
+                        </Button>
+                        <Button Content="РГР" Style="{StaticResource PanelButton}">
+                        </Button>
+                    </StackPanel>
+                    
+                </Grid>
+                <Grid Grid.Column="1"  Background="#111111"></Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
