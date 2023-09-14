@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace DSPLabs;
 
-public class InterfaceElements
+public class InterfaceStyle
 {
     public static int CornerRadiusValue { get; private set; } = 15;
     public static int HalfCornerRadiusValue { get; private set; } = CornerRadiusValue / 2;

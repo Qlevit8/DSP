@@ -29,11 +29,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="LabelStyle" TargetType="Label">
-            <Setter Property="FontFamily" Value="{Binding Interface.FontFamily}"/>
-            <Setter Property="FontSize" Value="{Binding Interface.FontSize}"/>
-            <Setter Property="Foreground" Value="{Binding Interface.FontColor}"/>
-        </Style>
         <Style x:Key="PanelButton" TargetType="Button">
             <Setter Property="Foreground" Value="{Binding Interface.FontColor}" />
             <Setter Property="BorderThickness" Value="0"></Setter>
@@ -58,7 +53,43 @@
                 <Trigger Property="IsMouseOver" Value="False">
                     <Setter Property="Border.Background" Value="#222222" />
                 </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Border.Background" Value="#222222" />
+                </Trigger>
             </Style.Triggers>
+        </Style>
+        <Style x:Key="InstrumentButton" TargetType="Button">
+            <Setter Property="Foreground" Value="{Binding Interface.FontColor}" />
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="FontSize" Value="{Binding Interface.FontSize}" />
+            <Setter Property="FontFamily" Value="{Binding Interface.FontFamily}"/>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Border.Background" Value="#333333" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Border.Background" Value="#222222" />
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Border.Background" Value="#222222" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="{Binding Interface.FontFamily}"/>
+            <Setter Property="FontSize" Value="{Binding Interface.FontSize}"/>
+            <Setter Property="Foreground" Value="{Binding Interface.FontColor}"/>
         </Style>
     </Window.Resources>
     <Border Background="#333333" CornerRadius="{Binding Interface.CornerRadiusValue}"
@@ -71,6 +102,10 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
+            <MediaElement Name="AudioPlayer" 
+                          Source=""
+                          IsMuted="True"
+                          LoadedBehavior="Manual" UnloadedBehavior="Manual"/>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"/>
@@ -96,6 +131,11 @@
                     <ColumnDefinition Width="4*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" Background="#222222">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
                     <StackPanel>
                         <Button Content="Лабораторна #1" Style="{StaticResource PanelButton}">
                         </Button>
@@ -108,7 +148,32 @@
                         <Button Content="РГР" Style="{StaticResource PanelButton}">
                         </Button>
                     </StackPanel>
-                    
+                    <Grid Grid.Row="1" Background="#333333"></Grid>
+                    <DockPanel Grid.Row="2" 
+                                x:Name="InstrumentsPanel"
+                                FlowDirection="RightToLeft">
+                        <Button Style="{StaticResource InstrumentButton}"
+                                Width="30" Click="LoadAudioFile">
+                            <Image Source="Images/Download.png" 
+                                   Stretch="Fill"
+                                   Margin="5"/>
+                        </Button>
+                        <Button Style="{StaticResource InstrumentButton}"
+                                Width="30" Click="PlayAudioFile">
+                            <Image Source="Images/Play.png" 
+                                   Stretch="Fill"
+                                   Margin="5"/>
+                        </Button>
+                        <Button Style="{StaticResource InstrumentButton}"
+                                Width="30" Click="PauseAudio">
+                            <Image Source="Images/Pause.png" 
+                                   Stretch="Fill"
+                                   Margin="5"/>
+                        </Button>
+                        <Canvas x:Name="Canvas" 
+                                    Background="White"
+                                    Margin="0,5,5,5"/>
+                    </DockPanel>
                 </Grid>
                 <Grid Grid.Column="1"  Background="#111111"></Grid>
             </Grid>
