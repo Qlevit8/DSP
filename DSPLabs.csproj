@@ -5,12 +5,14 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+	<NoWarn>8602;8604</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Images\Download.png" />
     <None Remove="Images\Pause.png" />
     <None Remove="Images\Play.png" />
+    <None Remove="Images\Save.png" />
     <None Remove="Images\Stop.png" />
   </ItemGroup>
 
@@ -20,7 +22,16 @@
     </Resource>
     <Resource Include="Images\Pause.png" />
     <Resource Include="Images\Play.png" />
+    <Resource Include="Images\Save.png" />
     <Resource Include="Images\Stop.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="outputs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
   </ItemGroup>
 
 </Project>

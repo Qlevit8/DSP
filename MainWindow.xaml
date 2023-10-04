@@ -48,13 +48,13 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Border.Background" Value="#333333" />
+                    <Setter Property="Border.Background" Value="{Binding Interface.MainColors[0]}" />
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Border.Background" Value="#222222" />
+                    <Setter Property="Border.Background" Value="{Binding Interface.MainColors[1]}" />
                 </Trigger>
                 <Trigger Property="IsMouseCaptured" Value="True">
-                    <Setter Property="Border.Background" Value="#222222" />
+                    <Setter Property="Border.Background" Value="{Binding Interface.MainColors[1]}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -76,13 +76,13 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Border.Background" Value="#333333" />
+                    <Setter Property="Border.Background" Value="{Binding Interface.MainColors[0]}" />
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Border.Background" Value="#222222" />
+                    <Setter Property="Border.Background" Value="{Binding Interface.MainColors[1]}" />
                 </Trigger>
                 <Trigger Property="IsMouseCaptured" Value="True">
-                    <Setter Property="Border.Background" Value="#222222" />
+                    <Setter Property="Border.Background" Value="{Binding Interface.MainColors[1]}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -92,7 +92,7 @@
             <Setter Property="Foreground" Value="{Binding Interface.FontColor}"/>
         </Style>
     </Window.Resources>
-    <Border Background="#333333" CornerRadius="{Binding Interface.CornerRadiusValue}"
+    <Border Background="{Binding Interface.MainColors[0]}" CornerRadius="{Binding Interface.CornerRadiusValue}"
             MouseLeftButtonDown="WindowMouseLeftButtonDown"
             MouseMove="WindowMouseMove"
             MouseLeftButtonUp="WindowMouseLeftButtonUp">
@@ -130,10 +130,11 @@
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="4*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0" Background="#222222">
+                <Grid Grid.Column="0" Background="{Binding Interface.MainColors[1]}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="2"/>
+                        <RowDefinition Height="30"/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
                     <StackPanel>
@@ -143,21 +144,27 @@
                         </Button>
                         <Button Content="Лабораторна #3" Style="{StaticResource PanelButton}">
                         </Button>
-                        <Button Content="Лабораторна #4" Style="{StaticResource PanelButton}">
-                        </Button>
                         <Button Content="РГР" Style="{StaticResource PanelButton}">
                         </Button>
                     </StackPanel>
-                    <Grid Grid.Row="1" Background="#333333"></Grid>
-                    <DockPanel Grid.Row="2" 
+                    <Grid Grid.Row="1" Background="{Binding Interface.MainColors[0]}"></Grid>
+                    <StackPanel Grid.Row="2" 
                                 x:Name="InstrumentsPanel"
-                                FlowDirection="RightToLeft">
+                                FlowDirection="RightToLeft"
+                                Orientation="Horizontal">
+                        <Button Style="{StaticResource InstrumentButton}"
+                                Width="30" Click="SaveAudioFile">
+                            <Image Source="Images/Save.png"
+                                   Stretch="Fill"
+                                   Margin="5">
+                            </Image>
+                        </Button>
                         <Button Style="{StaticResource InstrumentButton}"
                                 Width="30" Click="LoadAudioFile">
                             <Image Source="Images/Download.png" 
                                    Stretch="Fill"
                                    Margin="5"/>
-                        </Button>
+                        </Button>                        
                         <Button Style="{StaticResource InstrumentButton}"
                                 Width="30" Click="PlayAudioFile">
                             <Image Source="Images/Play.png" 
@@ -170,12 +177,27 @@
                                    Stretch="Fill"
                                    Margin="5"/>
                         </Button>
-                        <Canvas x:Name="Canvas" 
-                                    Background="White"
-                                    Margin="0,5,5,5"/>
-                    </DockPanel>
+                    </StackPanel>
+                    <Grid Grid.Row="3" Background="{Binding Interface.MainColors[0]}">
+                        <TextBox x:Name="FileName" HorizontalContentAlignment="Left"
+                             VerticalContentAlignment="Center" Foreground="Black" 
+                             Background="White"
+                             Text="File name" Margin="5"
+                             FontFamily="{Binding Interface.FontFamily}"></TextBox>
+                    </Grid>
                 </Grid>
-                <Grid Grid.Column="1"  Background="#111111"></Grid>
+                <Grid Grid.Column="1"  Background="{Binding Interface.MainColors[2]}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Background="{Binding Interface.MainColors[3]}">
+                        <Canvas x:Name="AudioCanvas"
+                              Margin="5">
+
+                        </Canvas>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     </Border>
