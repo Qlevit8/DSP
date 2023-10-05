@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -8,7 +9,7 @@ namespace DSPLabs;
 
 public static class CanvasVisualisation
 {
-    public static void DrawLines(int[] fragment, Canvas canvas, double coeff)
+    public static void DrawLines(this Canvas canvas, int[] fragment, double coeff)
     {
         canvas.Children.Clear();
         var width = (int)canvas.ActualWidth;
@@ -28,7 +29,7 @@ public static class CanvasVisualisation
             canvas.Children.Add(vertL);
         }
     }    
-    public static void DrawFFT(int[] fragment, Canvas canvas, double coeff)
+    public static void DrawFFT(this Canvas canvas, int[] fragment, double coeff)
     {
         canvas.Children.Clear();
         var width = (int)canvas.ActualWidth;
@@ -49,7 +50,7 @@ public static class CanvasVisualisation
         }
     }
 
-    public static void DrawWaves(int[] fragment, Canvas canvas, double coeff)
+    public static void DrawWaves(this Canvas canvas, int[] fragment, double coeff)
     {
         canvas.Children.Clear();
         var width = (int)canvas.ActualWidth;
@@ -71,5 +72,17 @@ public static class CanvasVisualisation
             previous = cur;
             canvas.Children.Add(vertL);
         }
+    }
+
+    public static void AddText(this Canvas canvas, string text, Style style)
+    {
+        Label label = new Label()
+        {
+            Style = style,
+            Content = text,
+            Width = canvas.ActualWidth,
+            HorizontalContentAlignment = HorizontalAlignment.Right,
+        };
+        canvas.Children.Add(label);
     }
 }

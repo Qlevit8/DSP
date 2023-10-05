@@ -211,7 +211,6 @@
                     <Grid Grid.Row="4" Background="{Binding Interface.MainColors[3]}">
                         <Canvas x:Name="TransformationResult"
                               Margin="5">
-
                         </Canvas>
                     </Grid>
                 </Grid>

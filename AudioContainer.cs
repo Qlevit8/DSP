@@ -1,11 +1,9 @@
-﻿using MathNet.Numerics.IntegralTransforms;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 
 namespace DSPLabs;
 

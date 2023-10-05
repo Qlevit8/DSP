@@ -47,7 +47,7 @@ public partial class MainWindow : Window
             return;
         FileName.Text = Path.GetFileNameWithoutExtension(path);
         var pieces = AudioContainer.CutByPieces((int)AudioCanvas.ActualWidth * 10);
-        CanvasVisualisation.DrawLines(pieces, AudioCanvas, 0.1);
+        AudioCanvas.DrawLines(pieces, 0.1);
     }
     private void SaveAudioFile(object sender, RoutedEventArgs e)
     {
@@ -87,8 +87,10 @@ public partial class MainWindow : Window
         if (!AudioContainer.IsEnabled || x >= AudioCanvas.ActualWidth) return;
         var coef = AudioContainer.Fragments.Length / AudioCanvas.ActualWidth;
         var position = (int)(x * coef);
-        CanvasVisualisation.DrawWaves(AudioContainer.Fragments[position], FragmentCanvas, AudioCanvas.ActualWidth / AudioContainer.FragmentSize);
-        CanvasVisualisation.DrawFFT(FFT.GetAmplitudes(FFT.Perform(AudioContainer.Fragments[position])), TransformationResult, AudioCanvas.ActualWidth / AudioContainer.FragmentSize * 2);
+        FragmentCanvas.DrawWaves(AudioContainer.Fragments[position], AudioCanvas.ActualWidth / AudioContainer.FragmentSize);
+        FragmentCanvas.AddText($"Fragment {position} (Size: {AudioContainer.FragmentSize})", FindResource("LabelStyle") as Style);
+        TransformationResult.DrawFFT(FFT.GetAmplitudes(FFT.Perform(AudioContainer.Fragments[position])), AudioCanvas.ActualWidth / AudioContainer.FragmentSize * 2);
+        TransformationResult.AddText("FFT", FindResource("LabelStyle") as Style);
     }
 
     private void Exit(object sender, RoutedEventArgs e) =>
@@ -96,9 +98,4 @@ public partial class MainWindow : Window
 
     private void Minimize(object sender, RoutedEventArgs e) =>
         WindowState = WindowState.Minimized;
-
-    private void AudioCanvas_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-
-    }
 }

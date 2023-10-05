@@ -9,7 +9,7 @@ public class InterfaceStyle
         new SolidColorBrush(Color.FromRgb(51, 51, 51)),
         new SolidColorBrush(Color.FromRgb(34, 34, 34)),
         new SolidColorBrush(Color.FromRgb(17, 17, 17)),
-        new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+        new SolidColorBrush(Color.FromRgb(10, 10, 10)),
     };
     public static int CornerRadiusValue { get; private set; } = 15;
     public static int HalfCornerRadiusValue { get; private set; } = CornerRadiusValue / 2;
