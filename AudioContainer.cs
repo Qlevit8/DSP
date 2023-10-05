@@ -1,17 +1,22 @@
-﻿using Microsoft.Win32;
+﻿using MathNet.Numerics.IntegralTransforms;
+using Microsoft.Win32;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 
 namespace DSPLabs;
 
 public class AudioContainer
 {
+    public const int FragmentSize = 512;
     private string? _audioPath { get; set; }
     private int[]? _audioLeftData { get; set; }
     private int[]? _audioRightData { get; set; }
+    public int[][]? Fragments { get; set; }
+
     public bool IsEnabled
     {
         get => _audioPath is not null && _audioLeftData is not null && _audioRightData is not null;
@@ -24,8 +29,7 @@ public class AudioContainer
 
     public int[] CutByPieces(int count)
     {
-        if (!IsEnabled)
-            return new int[] { };
+        if (!IsEnabled) return new int[] { };
         var result = new int[count];
         int elements = _audioLeftData.Length / count;
         for (int i = 0; i < count; i++)
@@ -37,15 +41,30 @@ public class AudioContainer
         return result;
     }
 
-    public string Load()
+    public void CutByFragments()
+    {
+        if (!IsEnabled) return;
+        int counter = 0;
+        int[][] data = new int[_audioLeftData.Length / FragmentSize][];
+        while ((counter * FragmentSize) + FragmentSize < _audioLeftData.Length)
+        {
+            data[counter] = _audioLeftData[(counter * FragmentSize)..((counter * FragmentSize) + FragmentSize)];
+            counter++;
+        }
+        Fragments = data;
+    }
+
+    public string? Load()
     {
         OpenFileDialog file = new OpenFileDialog();
         file.DefaultExt = ".wav";
         file.Filter = "Audio files|*.wav";
         file.ShowDialog();
         var path = file.FileName;
+        if (path == "") return null;
         _audioPath = path;
         (_audioLeftData, _audioRightData) = AudioToWaves(path);
+        CutByFragments();
         return _audioPath;
     }
 
@@ -81,6 +100,7 @@ public class AudioContainer
         }
         return (left.ToArray(), right.ToArray());
     }
+
     private static void WavesToAudio(int[] leftData, int[] rightData, string fileName)
     {
         string filePath = Path.Combine(GetDirectory(), "outputs", fileName + ".wav");

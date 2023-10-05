@@ -1,10 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using Path = System.IO.Path;
 
 namespace DSPLabs;
@@ -22,24 +17,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         DataContext = this;
     }
-    private void DrawOnCanvas()
-    {
-        var width = (int)AudioCanvas.ActualWidth;
-        var height = (int)AudioCanvas.ActualHeight;
-        AudioCanvas.Children.Clear();
-        var pieces = AudioContainer.CutByPieces(width);
-        double range = (double)height / Math.Max(pieces.Max(), -pieces.Min()) / 2;
-        for (int i = 0; i < pieces.Length; i++)
-        {
-            Line vertL = new Line();
-            vertL.Stroke = new SolidColorBrush(Colors.White);
-            vertL.X1 = i;
-            vertL.X2 = i;
-            vertL.Y1 = height / 2;
-            vertL.Y2 = height / 2 + pieces[i] * range;
-            AudioCanvas.Children.Add(vertL);
-        }
-    }
+
     private void PlayAudioFile(object sender, RoutedEventArgs e)
     {
         if (AudioContainer.GetPath() is not string path)
@@ -65,10 +43,11 @@ public partial class MainWindow : Window
     private void LoadAudioFile(object sender, RoutedEventArgs e)
     {
         var path = AudioContainer.Load();
-        if (!AudioContainer.IsEnabled)
+        if (!AudioContainer.IsEnabled || path is null)
             return;
         FileName.Text = Path.GetFileNameWithoutExtension(path);
-        DrawOnCanvas();
+        var pieces = AudioContainer.CutByPieces((int)AudioCanvas.ActualWidth * 10);
+        CanvasVisualisation.DrawLines(pieces, AudioCanvas, 0.1);
     }
     private void SaveAudioFile(object sender, RoutedEventArgs e)
     {
@@ -101,6 +80,15 @@ public partial class MainWindow : Window
     {
         if (e.ChangedButton == MouseButton.Left)
             isDragging = false;
+    }    
+    private void ShowAudioFragment(object sender, MouseButtonEventArgs e)
+    {
+        var x = e.GetPosition(AudioCanvas).X;
+        if (!AudioContainer.IsEnabled || x >= AudioCanvas.ActualWidth) return;
+        var coef = AudioContainer.Fragments.Length / AudioCanvas.ActualWidth;
+        var position = (int)(x * coef);
+        CanvasVisualisation.DrawWaves(AudioContainer.Fragments[position], FragmentCanvas, AudioCanvas.ActualWidth / AudioContainer.FragmentSize);
+        CanvasVisualisation.DrawFFT(FFT.GetAmplitudes(FFT.Perform(AudioContainer.Fragments[position])), TransformationResult, AudioCanvas.ActualWidth / AudioContainer.FragmentSize * 2);
     }
 
     private void Exit(object sender, RoutedEventArgs e) =>
@@ -108,4 +96,9 @@ public partial class MainWindow : Window
 
     private void Minimize(object sender, RoutedEventArgs e) =>
         WindowState = WindowState.Minimized;
+
+    private void AudioCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+
+    }
 }

@@ -105,7 +105,8 @@
             <MediaElement Name="AudioPlayer" 
                           Source=""
                           IsMuted="True"
-                          LoadedBehavior="Manual" UnloadedBehavior="Manual"/>
+                          LoadedBehavior="Manual" UnloadedBehavior="Manual"
+                          />
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"/>
@@ -189,10 +190,26 @@
                 <Grid Grid.Column="1"  Background="{Binding Interface.MainColors[2]}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="5"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid Background="{Binding Interface.MainColors[3]}">
-                        <Canvas x:Name="AudioCanvas"
+                        <Canvas x:Name="AudioCanvas" 
+                              Margin="5"
+                              MouseDown="ShowAudioFragment">
+
+                        </Canvas>
+                    </Grid>
+                    <Grid Grid.Row="2" Background="{Binding Interface.MainColors[3]}">
+                        <Canvas x:Name="FragmentCanvas"
+                              Margin="5">
+
+                        </Canvas>
+                    </Grid>
+                    <Grid Grid.Row="4" Background="{Binding Interface.MainColors[3]}">
+                        <Canvas x:Name="TransformationResult"
                               Margin="5">
 
                         </Canvas>
