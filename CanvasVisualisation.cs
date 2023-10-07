@@ -21,7 +21,7 @@ public static class CanvasVisualisation
         for (int i = 0; i < fragment.Length; i++)
         {
             Line vertL = new Line();
-            vertL.Stroke = new SolidColorBrush(Colors.White);
+            vertL.Stroke = new SolidColorBrush(Colors.CornflowerBlue);
             vertL.X1 = i * coeff;
             vertL.X2 = i * coeff;
             vertL.Y1 = height / 2;
@@ -40,8 +40,11 @@ public static class CanvasVisualisation
         double range = (double)height / Math.Max(fragment.Max(), -fragment.Min());
         for (int i = 0; i < fragment.Length; i++)
         {
-            Line vertL = new Line();
-            vertL.Stroke = new SolidColorBrush(Colors.White);
+            Line vertL = new Line() 
+            { 
+                Stroke = new SolidColorBrush(Colors.ForestGreen),
+                StrokeThickness = 4
+            };
             vertL.X1 = i * coeff;
             vertL.X2 = i * coeff;
             vertL.Y1 = height;
@@ -64,7 +67,7 @@ public static class CanvasVisualisation
         {
             (double x, double y) cur = (i * coeff, height / 2 - fragment[i] * range);
             Line vertL = new Line();
-            vertL.Stroke = new SolidColorBrush(Colors.White);
+            vertL.Stroke = new SolidColorBrush(Colors.IndianRed);
             vertL.X1 = previous.x;
             vertL.X2 = cur.x;
             vertL.Y1 = previous.y;

@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using Path = System.IO.Path;
 
 namespace DSPLabs;
@@ -10,8 +14,12 @@ public partial class MainWindow : Window
     public AudioContainer AudioContainer { get; private set; }
     private bool isDragging = false;
     private Point startPoint;
+    private ITask _currentTask;
+    private List<ITask> _poolTask;
     public MainWindow()
     {
+        _poolTask = new List<ITask>() { new Lab1(), new Lab2() };
+        _currentTask = _poolTask[0];
         AudioContainer = new AudioContainer();
         Interface = new InterfaceStyle();
         InitializeComponent();
@@ -81,18 +89,36 @@ public partial class MainWindow : Window
         if (e.ChangedButton == MouseButton.Left)
             isDragging = false;
     }    
-    private void ShowAudioFragment(object sender, MouseButtonEventArgs e)
+    private void SelectAudioFragment(object sender, MouseButtonEventArgs e)
     {
         var x = e.GetPosition(AudioCanvas).X;
         if (!AudioContainer.IsEnabled || x >= AudioCanvas.ActualWidth) return;
         var coef = AudioContainer.Fragments.Length / AudioCanvas.ActualWidth;
         var position = (int)(x * coef);
+        var textStyle = FindResource("LabelStyle") as Style;
         FragmentCanvas.DrawWaves(AudioContainer.Fragments[position], AudioCanvas.ActualWidth / AudioContainer.FragmentSize);
-        FragmentCanvas.AddText($"Fragment {position} (Size: {AudioContainer.FragmentSize})", FindResource("LabelStyle") as Style);
-        TransformationResult.DrawFFT(FFT.GetAmplitudes(FFT.Perform(AudioContainer.Fragments[position])), AudioCanvas.ActualWidth / AudioContainer.FragmentSize * 2);
-        TransformationResult.AddText("FFT", FindResource("LabelStyle") as Style);
+        FragmentCanvas.AddText($"Fragment {position} (Size: {AudioContainer.FragmentSize})", textStyle);
+        _currentTask.Calculate(AudioContainer.Fragments[position]);
+        _currentTask.Draw(TransformationResult, textStyle);
     }
 
+    private void ChangeTask(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement frameworkElement)
+        {
+            string elementName = frameworkElement.Name;
+            switch (elementName)
+            {
+                case "task1":
+                    _currentTask = _poolTask[0];
+                    break;
+                case "task2":
+                    _currentTask = _poolTask[1];
+                    break;
+                default: break;
+            }
+        }
+    }
     private void Exit(object sender, RoutedEventArgs e) =>
     Application.Current.Shutdown();
 

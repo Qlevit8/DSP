@@ -139,13 +139,17 @@
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
                     <StackPanel>
-                        <Button Content="Лабораторна #1" Style="{StaticResource PanelButton}">
+                        <Button Content="Лабораторна #1" Style="{StaticResource PanelButton}" 
+                                Name="task1" Click="ChangeTask">
                         </Button>
-                        <Button Content="Лабораторна #2" Style="{StaticResource PanelButton}">
+                        <Button Content="Лабораторна #2" Style="{StaticResource PanelButton}" 
+                                Name="task2" Click="ChangeTask">
                         </Button>
-                        <Button Content="Лабораторна #3" Style="{StaticResource PanelButton}">
+                        <Button Content="Лабораторна #3" Style="{StaticResource PanelButton}" 
+                                Name="task3" Click="ChangeTask">
                         </Button>
-                        <Button Content="РГР" Style="{StaticResource PanelButton}">
+                        <Button Content="РГР" Style="{StaticResource PanelButton}" 
+                                Name="task4" Click="ChangeTask">
                         </Button>
                     </StackPanel>
                     <Grid Grid.Row="1" Background="{Binding Interface.MainColors[0]}"></Grid>
@@ -198,7 +202,7 @@
                     <Grid Background="{Binding Interface.MainColors[3]}">
                         <Canvas x:Name="AudioCanvas" 
                               Margin="5"
-                              MouseDown="ShowAudioFragment">
+                              MouseDown="SelectAudioFragment">
 
                         </Canvas>
                     </Grid>
@@ -211,6 +215,7 @@
                     <Grid Grid.Row="4" Background="{Binding Interface.MainColors[3]}">
                         <Canvas x:Name="TransformationResult"
                               Margin="5">
+                           
                         </Canvas>
                     </Grid>
                 </Grid>
