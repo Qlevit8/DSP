@@ -7,13 +7,13 @@ namespace DSPLabs;
 
 public static class FFT
 {
-    public static int[] GetAmplitudes(Complex[] complexData)
+    public static double[] GetAmplitudes(Complex[] complexData)
     {
-        int[] amplitudes = new int[complexData.Length / 2];
+        double[] amplitudes = new double[complexData.Length / 2];
 
         for (int i = 0; i < amplitudes.Length; i++)
         {
-            amplitudes[i] = (int)complexData[i].Magnitude;
+            amplitudes[i] = complexData[i].Magnitude;
         }
         return amplitudes;
     }

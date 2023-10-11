@@ -1,18 +1,18 @@
 ﻿using NAudio.Wave;
+using System;
+using System.Linq;
 
 namespace DSPLabs;
 
 public static class MFCC
 {
 
-    public static void Perform()
+    public static double[] Perform(int[] fragment)
     {
-        //var mfccTransform = new MfccTransform
-        //{
-        //    SampleRate = sampleRate,
-        //    CepstrumCoefficientCount = numberOfCepstrumCoefficients,
-        //    LogMelFilterBankCount = 24, // Number of Mel filters
-        //    FrameSize = fftSize
-        //};
+        var mfcc = FFT.GetAmplitudes(FFT.Perform(fragment)); //FFT
+        mfcc = mfcc.Select(Convert).ToArray(); // Filter Bank + log
+        mfcc = FFT.GetAmplitudes(FFT.Perform(fragment)); // FFT
+        return mfcc;
     }
+    public static double Convert(double f) => 1127 * Math.Log(1 + f / 700);
 }

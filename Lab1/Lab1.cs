@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DSPLabs;
@@ -8,7 +9,7 @@ public class Lab1 : ITask
     private int[]? _outputs = null;
     public void Calculate(int[] fragment)
     {
-        _outputs = FFT.GetAmplitudes(FFT.Perform(fragment));
+        _outputs = FFT.GetAmplitudes(FFT.Perform(fragment)).Select(x => (int)x).ToArray();
     }
 
     public void Draw(Canvas canvas, Style textStyle)
