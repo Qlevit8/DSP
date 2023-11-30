@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -18,7 +19,7 @@ public partial class MainWindow : Window
     private List<ITask> _poolTask;
     public MainWindow()
     {
-        _poolTask = new List<ITask>() { new Lab1(), new Lab2() };
+        _poolTask = new List<ITask>() { new Lab1(), new Lab2(), new Lab3() };
         _currentTask = _poolTask[0];
         AudioContainer = new AudioContainer();
         Interface = new InterfaceStyle();
@@ -88,7 +89,7 @@ public partial class MainWindow : Window
     {
         if (e.ChangedButton == MouseButton.Left)
             isDragging = false;
-    }    
+    }
     private void SelectAudioFragment(object sender, MouseButtonEventArgs e)
     {
         var x = e.GetPosition(AudioCanvas).X;
@@ -115,10 +116,24 @@ public partial class MainWindow : Window
                 case "task2":
                     _currentTask = _poolTask[1];
                     break;
+                case "task3":
+                    _currentTask = _poolTask[2];
+                    break;
                 default: break;
             }
         }
     }
+
+    private void LaunchFull(object sender, RoutedEventArgs e)
+    {
+        var textStyle = FindResource("LabelStyle") as Style;
+        foreach (int[] fragment in AudioContainer.Fragments)
+        {
+            _currentTask.CalculateAdd(fragment);
+        }
+        _currentTask.Draw(TransformationResult, textStyle);
+    }
+
     private void Exit(object sender, RoutedEventArgs e) =>
     Application.Current.Shutdown();
 

@@ -3,12 +3,45 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace DSPLabs;
 
-public static class CanvasVisualisation
+public static class CanvasExtensions
 {
+    public static void DrawMFCC(this Canvas canvas, double[] fragment, double coeff, double pixelSize)
+    {
+        canvas.Children.Clear();
+        var width = (int)canvas.ActualWidth;
+        var height = (int)canvas.ActualHeight;
+        Rectangle rect = new Rectangle() { Height = height, Width = width };
+        rect.Fill = InterfaceStyle.MainColors[3];
+
+        Image image = new Image();
+        image.Stretch = Stretch.None;
+        image.Margin = new Thickness(0);
+
+        canvas.Children.Add(image);
+
+        byte[,,] bytes = new byte[height, width, 4];
+        int r = 1, g = 1, b = 1;
+        int iteratorG = 1;
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                bytes[i, j, 0] = (byte)(r++ % 255);
+                bytes[i, j, 1] = (byte)(g+= iteratorG % 255);
+                bytes[i, j, 2] = (byte)(b+=g % 255);
+                bytes[i, j, 3] = 255;
+                iteratorG++;
+            }
+        }
+        image.Source = CustomPainter.WindowLoaded(width, height, bytes);
+
+    }
+
     public static void DrawLines(this Canvas canvas, int[] fragment, double coeff)
     {
         canvas.Children.Clear();
@@ -28,7 +61,7 @@ public static class CanvasVisualisation
             vertL.Y2 = height / 2 - fragment[i] * range;
             canvas.Children.Add(vertL);
         }
-    }    
+    }
     public static void DrawFFT(this Canvas canvas, int[] fragment, double coeff)
     {
         canvas.Children.Clear();
@@ -40,8 +73,8 @@ public static class CanvasVisualisation
         double range = (double)height / Math.Max(fragment.Max(), -fragment.Min());
         for (int i = 0; i < fragment.Length; i++)
         {
-            Line vertL = new Line() 
-            { 
+            Line vertL = new Line()
+            {
                 Stroke = new SolidColorBrush(Colors.ForestGreen),
                 StrokeThickness = 4
             };

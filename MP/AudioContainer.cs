@@ -11,16 +11,16 @@ public class AudioContainer
 {
     public const int FragmentSize = 512;
     private string? _audioPath { get; set; }
-    private int[]? _audioLeftData { get; set; }
+    public int[]? AudioLeftData { get; private set; }
     private int[]? _audioRightData { get; set; }
     public int[][]? Fragments { get; set; }
 
     public bool IsEnabled
     {
-        get => _audioPath is not null && _audioLeftData is not null && _audioRightData is not null;
+        get => _audioPath is not null && AudioLeftData is not null && _audioRightData is not null;
     }
 
-    public (int, int) this[int index] => !IsEnabled ? (0, 0) : (_audioLeftData[index], _audioRightData[index]);
+    public (int, int) this[int index] => !IsEnabled ? (0, 0) : (AudioLeftData[index], _audioRightData[index]);
     public AudioContainer()
     {
     }
@@ -29,12 +29,12 @@ public class AudioContainer
     {
         if (!IsEnabled) return new int[] { };
         var result = new int[count];
-        int elements = _audioLeftData.Length / count;
+        int elements = AudioLeftData.Length / count;
         for (int i = 0; i < count; i++)
         {
             var cur = i * elements;
-            result[i] = ((int)_audioLeftData[cur..(cur + elements)].Average(x => x) +
-                (int)_audioLeftData[cur..(cur + elements)].Average(x => x)) / 2;
+            result[i] = ((int)AudioLeftData[cur..(cur + elements)].Average(x => x) +
+                (int)AudioLeftData[cur..(cur + elements)].Average(x => x)) / 2;
         }
         return result;
     }
@@ -43,10 +43,10 @@ public class AudioContainer
     {
         if (!IsEnabled) return;
         int counter = 0;
-        int[][] data = new int[_audioLeftData.Length / FragmentSize][];
-        while ((counter * FragmentSize) + FragmentSize < _audioLeftData.Length)
+        int[][] data = new int[AudioLeftData.Length / FragmentSize][];
+        while ((counter * FragmentSize) + FragmentSize < AudioLeftData.Length)
         {
-            data[counter] = _audioLeftData[(counter * FragmentSize)..((counter * FragmentSize) + FragmentSize)];
+            data[counter] = AudioLeftData[(counter * FragmentSize)..((counter * FragmentSize) + FragmentSize)];
             counter++;
         }
         Fragments = data;
@@ -61,7 +61,7 @@ public class AudioContainer
         var path = file.FileName;
         if (path == "") return null;
         _audioPath = path;
-        (_audioLeftData, _audioRightData) = AudioToWaves(path);
+        (AudioLeftData, _audioRightData) = AudioToWaves(path);
         CutByFragments();
         return _audioPath;
     }
@@ -70,7 +70,7 @@ public class AudioContainer
     {
         if (!IsEnabled)
             return;
-        WavesToAudio(_audioLeftData, _audioRightData, fileName);
+        WavesToAudio(AudioLeftData, _audioRightData, fileName);
     }
 
     public string? GetPath() => IsEnabled ? _audioPath : null;

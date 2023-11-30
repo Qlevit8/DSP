@@ -182,6 +182,12 @@
                                    Stretch="Fill"
                                    Margin="5"/>
                         </Button>
+                        <Button Style="{StaticResource InstrumentButton}"
+                                Width="30" Click="LaunchFull">
+                            <Image Source="Images/Stop.png" 
+                                   Stretch="Fill"
+                                   Margin="5"/>
+                        </Button>
                     </StackPanel>
                     <Grid Grid.Row="3" Background="{Binding Interface.MainColors[0]}">
                         <TextBox x:Name="FileName" HorizontalContentAlignment="Left"
